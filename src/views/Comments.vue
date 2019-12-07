@@ -44,10 +44,19 @@ export default {
       posts: []
     }
   },
+  computed: {
+    idToken() {
+      return this.$store.getters.idToken;
+    }
+  },
   created() {             // ロード時に実行
     axios.get(
-      '/comments'
-      )
+      '/comments', {
+        headers: {
+          Authorization: `Bearer ${this.idToken}`
+        }
+      }
+    )
     .then(response => {
       this.posts = response.data.documents;
     })
@@ -55,8 +64,7 @@ export default {
   methods: {
     createComment() {
       axios.post(
-        '/comments',        // baseURLを使用
-        {                   // postの引数（url, data, ヘッダーなどの設定）
+        '/comments', {        // baseURLを使用 postの引数（url, data, ヘッダーなどの設定）
           fields: {                 // cloud firestoreではこの型が必要
             name: {                 // オブジェクトでカラム
               stringValue: this.name      // このような形でデータを送る
@@ -64,6 +72,10 @@ export default {
             comment: {
               stringValue: this.comment
             }
+          }
+        }, {
+          headers: {
+            Authorization: `Bearer ${this.idToken}`
           }
         }
       )

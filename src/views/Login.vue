@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>登録</h3>
+    <h3>ログイン</h3>
     <label for="email">Email：</label>
     <input
       id="email"
@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import axios from '../axios-auth';
 
 export default {
   data() {
@@ -31,17 +30,13 @@ export default {
   },
   methods: {
     login() {
-      axios.post(
-        '/accounts:signInWithPassword?key=AIzaSyAqhBri1FeL8F6MI6MuxahWihnc7h4OfPY',
+      this.$store.dispatch(
+        'login',
         {
           email: this.email,
-          password: this.password,
-          returnSecureToken: true
+          password: this.password
         }
       )
-      .then(response => {
-        console.log(response);
-      });
       this.email = "";
       this.password = "";
     }
