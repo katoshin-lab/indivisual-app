@@ -1,18 +1,24 @@
 <template>
   <div id="app">
     <header>
-      <router-link 
-        to="/"
-        class="header-item"
-      >掲示板</router-link>
-      <router-link
-        to="/login"
-        class="header-item"
-      >ログイン</router-link>
-      <router-link
-        to="/register"
-        class="header-item"
-      >登録</router-link>
+      <template v-if="isAuthenticated">
+        <div>
+          <router-link 
+            to="/"
+            class="header-item"
+          >掲示板</router-link>
+        </div>
+      </template>
+      <template v-if="!isAuthenticated">
+        <router-link
+          to="/login"
+          class="header-item"
+        >ログイン</router-link>
+        <router-link
+          to="/register"
+          class="header-item"
+        >サインアップ</router-link>
+      </template>
     </header>
     <transition
       name="fade"
@@ -22,6 +28,16 @@
     </transition>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.idToken !== null;
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .header-item {
