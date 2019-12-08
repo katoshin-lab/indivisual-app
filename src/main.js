@@ -33,6 +33,8 @@ const interceptorsResponse =
 axios.interceptors.request.eject(interceptorsRequest);  //インターセプターを使用しない
 axios.interceptors.response.eject(interceptorsResponse);
 
+store.dispatch('autoLogin')
+
 new Vue({
   router,
   store,

@@ -4,6 +4,7 @@ import Comments from './views/Comments.vue';
 import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 import store from './store'
+import Thread from './views/Tbread.vue';
 
 Vue.use(Router);
 
@@ -42,6 +43,11 @@ export default new Router({
           next();
         }
       }
+    },
+    {
+      path: '/:id',
+      component: Thread,
+      name: "thread"
     }
   ]
 })

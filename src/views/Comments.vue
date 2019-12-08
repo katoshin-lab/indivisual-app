@@ -1,39 +1,52 @@
 <template>
   <div>
-    <h3>掲示板に投稿する</h3>
-    <label for="name">ニックネーム：</label>
-    <input
-      id="name"
-      type="text"
-      v-model="name"
-    >
-    <br>
-    <label for="comment">コメント：</label>
-    <textarea
-      id="commnet"
-      v-model="comment"
-    ></textarea>
-    <br>
-    <button @click="createComment">コメントをサーバーに送る</button>
     <h2>掲示板</h2>
-    <transition-group
-      name="fade"
-      mode="out-in"
-    >
-      <div
-        v-for="post in posts"
-        :key="post.name"
-        class="post-box"
+    <div class="posts">
+      <transition-group
+        name="fade"
+        mode="out-in"
       >
-        <div>名前：{{ post.fields.name.stringValue }}</div>
-        <div>コメント：{{ post.fields.comment.stringValue }}</div>
+      
+        <div
+          v-for="(post, index) in posts"
+          :key="post.name"
+          class="post-box"
+        >
+          <router-link :to="{
+            name: 'thread',
+            params: {id: index + 1}
+          }">
+            <div :id="index + 1">投稿者：{{ post.fields.name.stringValue }}</div>
+            <div>トピック：{{ post.fields.comment.stringValue }}</div>
+          </router-link>
+        </div>
+      </transition-group>
+    </div>
+    <h3>掲示板に投稿する</h3>
+    <div class="form-box">
+      <div class="form-box__name">
+        <label for="name">nickname</label>
+        <input
+          id="name"
+          class="form"
+          type="text"
+          v-model="name"
+        >
       </div>
-    </transition-group>
+      <div>
+        <label for="comment">comment</label>
+        <textarea
+          id="commnet"
+          class="form"
+          v-model="comment"
+        ></textarea>
+      </div>
+      <button @click="createComment">送信</button>
+    </div>
   </div>
 </template>
 
 <script>
-// import axios from 'axios';
 import axios from 'axios'
 
 export default {
@@ -81,6 +94,7 @@ export default {
       )
       .then(response => {
         console.log(response);
+        this.$router.go({path: this.$router.currentRoute.path, force: true})
       })
       .catch(error => {
         console.log(error);
@@ -93,8 +107,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .posts {
+    height: 450px;
+    overflow: scroll;
+  }
   .post-box {
+    width: 60vw;
     padding: 10px;
+    margin: 10px auto;
+    border: solid 1px gray;
+    border-radius: 3px;
+  }
+
+  .form-box {
+    width: 60%;
+    margin: 0 auto;
+  }
+
+  .form {
+    border-radius: 3px;
+    width: 50%;
+  }
+
+  label {
+    display: inline-block;
+    margin: auto;
   }
 
   .fade-enter,

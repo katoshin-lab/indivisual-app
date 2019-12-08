@@ -7,6 +7,7 @@
             to="/"
             class="header-item"
           >掲示板</router-link>
+          <span class="header-item" @click="logout">ログアウト</span>
         </div>
       </template>
       <template v-if="!isAuthenticated">
@@ -35,6 +36,11 @@ export default {
     isAuthenticated() {
       return this.$store.getters.idToken !== null;
     }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
+    }
   }
 }
 </script>
@@ -42,8 +48,10 @@ export default {
 <style lang="scss" scoped>
 .header-item {
   padding: 10px;
+  cursor: pointer;
 }
 #app {
+  height: calc(100vh - 76px);
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
